@@ -1,1 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Support Our Cause</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      color: white;
+    }
+    #bgImage, #bgVideo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+    #bgVideo {
+      display: none; /* Hidden until donation */
+    }
+    .overlay {
+      position: relative;
+      top: 40%;
+      z-index: 10;
+    }
+    .donate-btn {
+      background: #0070ba; /* PayPal blue */
+      padding: 15px 30px;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      cursor: pointer;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <!-- Static image shown first -->
+  <img id="bgImage" src="your-static-image.jpg" alt="Background">
 
+  <!-- Full video (unlocked after donation) -->
+  <video id="bgVideo" autoplay muted loop playsinline>
+    <source src="your-video.mp4" type="video/mp4">
+    Your browser does not support video.
+  </video>
+
+  <!-- Donation overlay -->
+  <div class="overlay" id="donationPrompt">
+    <h1>Donate to Unlock the Video</h1>
+
+    <!-- PayPal Donate Button -->
+    <form action="https://www.paypal.com/donate" method="post" target="_top">
+      <input type="hidden" name="hosted_button_id" value="YOUR_BUTTON_ID_HERE" />
+      <!-- Return URL (set this in PayPal too) -->
+      <input type="hidden" name="return" value="https://YOUR_USERNAME.github.io/donation-video-site/?donated=true" />
+      <input type="submit" value="Donate with PayPal" class="donate-btn">
+    </form>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('donated') === 'true') {
+      document.getElementById("bgVideo").style.display = "block";
+      document.getElementById("bgImage").style.display = "none";
+      document.getElementById("donationPrompt").style.display = "none";
+    }
+  </script>
+</body>
+</html>
