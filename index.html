@@ -39,6 +39,20 @@
       cursor: pointer;
       color: white;
     }
+    .play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 15px 30px;
+      font-size: 18px;
+      border-radius: 10px;
+      background: #0070ba;
+      color: white;
+      border: none;
+      cursor: pointer;
+      z-index: 20;
+    }
   </style>
 </head>
 <body>
@@ -46,7 +60,7 @@
   <img id="bgImage" src="your-static-image.jpg" alt="Background">
 
   <!-- Full video (unlocked after donation) -->
-  <video id="bgVideo" autoplay muted loop playsinline>
+  <video id="bgVideo" autoplay muted playsinline loop>
     <source src="your-video.mp4" type="video/mp4">
     Your browser does not support video.
   </video>
@@ -57,7 +71,7 @@
 
     <!-- PayPal Donate Button -->
     <form action="https://www.paypal.com/donate" method="post" target="_top">
-      <input type="hidden" name="hosted_button_id" value="Q6EE3PA4NGNMY" />
+      <input type="hidden" name="hosted_button_id" value="YOUR_BUTTON_ID_HERE" />
       <!-- Return URL (set this in PayPal too) -->
       <input type="hidden" name="return" value="https://gordonbirthdaydrink.github.io/birthdaydrink/?donated=true" />
       <input type="submit" value="Donate with PayPal" class="donate-btn">
@@ -67,9 +81,25 @@
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('donated') === 'true') {
-      document.getElementById("bgVideo").style.display = "block";
+      const video = document.getElementById("bgVideo");
+      video.style.display = "block";
       document.getElementById("bgImage").style.display = "none";
       document.getElementById("donationPrompt").style.display = "none";
+
+      // Try autoplay
+      video.play().catch(err => {
+        console.log("Autoplay blocked on mobile:", err);
+
+        // Show "Tap to Play" button
+        const btn = document.createElement("button");
+        btn.innerText = "Tap to Play Video";
+        btn.className = "play-btn";
+        btn.onclick = () => {
+          video.play();
+          btn.remove();
+        };
+        document.body.appendChild(btn);
+      });
     }
   </script>
 </body>
